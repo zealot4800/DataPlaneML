@@ -1,0 +1,325 @@
+{
+  "processor_0": {
+    "id": 0,
+    "parser": { "levels": [], "parser_level": 0 },
+    "matcher": [
+      { "id": 0, "match_type": "EXACT", "miss_action_id": 0, "no_table": 1, "field_infos": [], "key_memory": [] }
+    ],
+    "executor": [
+      {
+        "id": 0,
+        "parameter_num": 0,
+        "primitives": [
+          {
+            "lvalue": { "header_id": 31, "field_internal_offset": 0,  "field_length": 32, "type": "FIELD" },
+            "rvalue": {
+              "type": "EXPR",
+              "value": {
+                "op": "npb",
+                "left":  { "type": "FIELD", "value": { "header_id": 30, "field_internal_offset": 0, "field_length": 256, "type": "FIELD" } },
+                "right": { "type": "CONST", "value": 0 }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": [],
+    "next_proc": 1
+  },
+  "processor_1": {
+    "id": 1,
+    "parser": { "levels": [], "parser_level": 0 },
+    "matcher": [
+      { "id": 0, "match_type": "EXACT", "miss_action_id": 0, "no_table": 1, "field_infos": [], "key_memory": [] }
+    ],
+    "executor": [
+      {
+        "id": 0,
+        "parameter_num": 0,
+        "primitives": [
+          {
+            "lvalue": { "header_id": 31, "field_internal_offset": 32, "field_length": 32, "type": "FIELD" },
+            "rvalue": {
+              "type": "EXPR",
+              "value": {
+                "op": "npb",
+                "left":  { "type": "FIELD", "value": { "header_id": 30, "field_internal_offset": 0, "field_length": 256, "type": "FIELD" } },
+                "right": { "type": "CONST", "value": 1 }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": [],
+    "next_proc": 2
+  },
+  "processor_2": {
+    "id": 2,
+    "parser": { "levels": [], "parser_level": 0 },
+    "matcher": [
+      { "id": 0, "match_type": "EXACT", "miss_action_id": 0, "no_table": 1, "field_infos": [], "key_memory": [] }
+    ],
+    "executor": [
+      {
+        "id": 0,
+        "parameter_num": 0,
+        "primitives": [
+          {
+            "lvalue": { "header_id": 31, "field_internal_offset": 64, "field_length": 32, "type": "FIELD" },
+            "rvalue": {
+              "type": "EXPR",
+              "value": {
+                "op": "npb",
+                "left":  { "type": "FIELD", "value": { "header_id": 30, "field_internal_offset": 0, "field_length": 256, "type": "FIELD" } },
+                "right": { "type": "CONST", "value": 2 }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": [],
+    "next_proc": 3
+  },
+  "processor_3": {
+    "id": 3,
+    "parser": { "levels": [], "parser_level": 0 },
+    "matcher": [
+      { "id": 0, "match_type": "EXACT", "miss_action_id": 0, "no_table": 1, "field_infos": [], "key_memory": [] }
+    ],
+    "executor": [
+      {
+        "id": 0,
+        "parameter_num": 0,
+        "primitives": [
+          {
+            "lvalue": { "header_id": 31, "field_internal_offset": 96, "field_length": 32, "type": "FIELD" },
+            "rvalue": {
+              "type": "EXPR",
+              "value": {
+                "op": "npb",
+                "left":  { "type": "FIELD", "value": { "header_id": 30, "field_internal_offset": 0, "field_length": 256, "type": "FIELD" } },
+                "right": { "type": "CONST", "value": 3 }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": [],
+    "next_proc": 4
+  },
+  "processor_4": {
+    "id": 4,
+    "parser": { "levels": [], "parser_level": 0 },
+    "matcher": [
+      { "id": 0, "match_type": "EXACT", "miss_action_id": 0, "no_table": 1, "field_infos": [], "key_memory": [] }
+    ],
+    "executor": [
+      {
+        "id": 0,
+        "parameter_num": 0,
+        "primitives": [
+          {
+            "lvalue": { "header_id": 31, "field_internal_offset": 128, "field_length": 32, "type": "FIELD" },
+            "rvalue": {
+              "type": "EXPR",
+              "value": {
+                "op": "npb",
+                "left":  { "type": "FIELD", "value": { "header_id": 30, "field_internal_offset": 0, "field_length": 256, "type": "FIELD" } },
+                "right": { "type": "CONST", "value": 4 }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": [],
+    "next_proc": 5
+  },
+  "processor_5": {
+    "id": 5,
+    "parser": { "levels": [], "parser_level": 0 },
+    "matcher": [
+      { "id": 0, "match_type": "EXACT", "miss_action_id": 0, "no_table": 1, "field_infos": [], "key_memory": [] }
+    ],
+    "executor": [
+      {
+        "id": 0,
+        "parameter_num": 0,
+        "primitives": [
+          {
+            "lvalue": { "header_id": 31, "field_internal_offset": 160, "field_length": 32, "type": "FIELD" },
+            "rvalue": {
+              "type": "EXPR",
+              "value": {
+                "op": "npb",
+                "left":  { "type": "FIELD", "value": { "header_id": 30, "field_internal_offset": 0, "field_length": 256, "type": "FIELD" } },
+                "right": { "type": "CONST", "value": 5 }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": [],
+    "next_proc": 6
+  },
+  "processor_6": {
+    "id": 6,
+    "parser": { "levels": [], "parser_level": 0 },
+    "matcher": [
+      { "id": 0, "match_type": "EXACT", "miss_action_id": 0, "no_table": 1, "field_infos": [], "key_memory": [] }
+    ],
+    "executor": [
+      {
+        "id": 0,
+        "parameter_num": 0,
+        "primitives": [
+          {
+            "lvalue": { "header_id": 31, "field_internal_offset": 192, "field_length": 32, "type": "FIELD" },
+            "rvalue": {
+              "type": "EXPR",
+              "value": {
+                "op": "sum_block",
+                "left": { "type": "FIELD", "value": { "header_id": 31, "field_internal_offset": 0,   "field_length": 32,  "type": "FIELD" } },
+                "right": {
+                  "type": "EXPR",
+                  "value": {
+                    "op": "sum_block",
+                    "left": { "type": "FIELD", "value": { "header_id": 31, "field_internal_offset": 32,  "field_length": 32,  "type": "FIELD" } },
+                    "right": {
+                      "type": "EXPR",
+                      "value": {
+                        "op": "sum_block",
+                        "left": { "type": "FIELD", "value": { "header_id": 31, "field_internal_offset": 64,  "field_length": 32,  "type": "FIELD" } },
+                        "right": { "type": "CONST", "value": 2 }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "lvalue": { "header_id": 31, "field_internal_offset": 224, "field_length": 32, "type": "FIELD" },
+            "rvalue": {
+              "type": "EXPR",
+              "value": {
+                "op": "sum_block",
+                "left": { "type": "FIELD", "value": { "header_id": 31, "field_internal_offset": 96,  "field_length": 32,  "type": "FIELD" } },
+                "right": {
+                  "type": "EXPR",
+                  "value": {
+                    "op": "sum_block",
+                    "left": { "type": "FIELD", "value": { "header_id": 31, "field_internal_offset": 128, "field_length": 32,  "type": "FIELD" } },
+                    "right": {
+                      "type": "EXPR",
+                      "value": {
+                        "op": "sum_block",
+                        "left": { "type": "FIELD", "value": { "header_id": 31, "field_internal_offset": 160, "field_length": 32,  "type": "FIELD" } },
+                        "right": { "type": "CONST", "value": 2 }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "lvalue": { "header_id": 31, "field_internal_offset": 256, "field_length": 32, "type": "FIELD" },
+            "rvalue": { "type": "CONST", "value": 0 }
+          }
+        ]
+      }
+    ],
+    "metadata": [],
+    "next_proc": 7
+  },
+  "processor_7": {
+    "id": 7,
+    "parser": { "levels": [], "parser_level": 0 },
+    "matcher": [
+      { "id": 0, "match_type": "EXACT", "miss_action_id": 0, "no_table": 1, "field_infos": [], "key_memory": [] }
+    ],
+    "executor": [
+      {
+        "id": 0,
+        "parameter_num": 0,
+        "primitives": [
+          {
+            "lvalue": { "header_id": 31, "field_internal_offset": 288, "field_length": 32, "type": "FIELD" },
+            "rvalue": {
+              "type": "EXPR",
+              "value": {
+                "op": "npb",
+                "left":  { "type": "FIELD", "value": { "header_id": 31, "field_internal_offset": 192, "field_length": 48, "type": "FIELD" } },
+                "right": { "type": "CONST", "value": 6 }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": [],
+    "next_proc": 8
+  },
+  "processor_8": {
+    "id": 8,
+    "parser": { "levels": [], "parser_level": 0 },
+    "matcher": [
+      { "id": 0, "match_type": "EXACT", "miss_action_id": 0, "no_table": 1, "field_infos": [], "key_memory": [] }
+    ],
+    "executor": [
+      {
+        "id": 0,
+        "parameter_num": 0,
+        "primitives": [
+          {
+            "lvalue": { "header_id": 31, "field_internal_offset": 320, "field_length": 32, "type": "FIELD" },
+            "rvalue": {
+              "type": "EXPR",
+              "value": {
+                "op": "npb",
+                "left":  { "type": "FIELD", "value": { "header_id": 31, "field_internal_offset": 240, "field_length": 48, "type": "FIELD" } },
+                "right": { "type": "CONST", "value": 7 }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": [],
+    "next_proc": 9
+  },
+  "processor_9": {
+    "id": 9,
+    "parser": { "levels": [], "parser_level": 0 },
+    "matcher": [
+      { "id": 0, "match_type": "EXACT", "miss_action_id": 0, "no_table": 1, "field_infos": [], "key_memory": [] }
+    ],
+    "executor": [
+      {
+        "id": 0,
+        "parameter_num": 0,
+        "primitives": [
+          {
+            "lvalue": { "header_id": 28, "field_internal_offset": 0, "field_length": 32, "type": "FIELD" },
+            "rvalue": {
+              "type": "EXPR",
+              "value": {
+                "op": "npb",
+                "left":  { "type": "FIELD", "value": { "header_id": 31, "field_internal_offset": 288, "field_length": 48, "type": "FIELD" } },
+                "right": { "type": "CONST", "value": 8 }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": [],
+    "next_proc": -1
+  }
+}

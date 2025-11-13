@@ -1,0 +1,140 @@
+{
+  "sigmoid_table": {
+    "output_bitwidth": 16,
+    "step": 1.0,
+    "entries": [
+      {
+        "input": -16,
+        "value": 0
+      },
+      {
+        "input": -15,
+        "value": 0
+      },
+      {
+        "input": -14,
+        "value": 0
+      },
+      {
+        "input": -13,
+        "value": 0
+      },
+      {
+        "input": -12,
+        "value": 0
+      },
+      {
+        "input": -11,
+        "value": 1
+      },
+      {
+        "input": -10,
+        "value": 3
+      },
+      {
+        "input": -9,
+        "value": 8
+      },
+      {
+        "input": -8,
+        "value": 22
+      },
+      {
+        "input": -7,
+        "value": 60
+      },
+      {
+        "input": -6,
+        "value": 162
+      },
+      {
+        "input": -5,
+        "value": 439
+      },
+      {
+        "input": -4,
+        "value": 1179
+      },
+      {
+        "input": -3,
+        "value": 3108
+      },
+      {
+        "input": -2,
+        "value": 7812
+      },
+      {
+        "input": -1,
+        "value": 17625
+      },
+      {
+        "input": 0,
+        "value": 32768
+      },
+      {
+        "input": 1,
+        "value": 47910
+      },
+      {
+        "input": 2,
+        "value": 57723
+      },
+      {
+        "input": 3,
+        "value": 62427
+      },
+      {
+        "input": 4,
+        "value": 64356
+      },
+      {
+        "input": 5,
+        "value": 65096
+      },
+      {
+        "input": 6,
+        "value": 65373
+      },
+      {
+        "input": 7,
+        "value": 65475
+      },
+      {
+        "input": 8,
+        "value": 65513
+      },
+      {
+        "input": 9,
+        "value": 65527
+      },
+      {
+        "input": 10,
+        "value": 65532
+      },
+      {
+        "input": 11,
+        "value": 65534
+      },
+      {
+        "input": 12,
+        "value": 65535
+      },
+      {
+        "input": 13,
+        "value": 65535
+      },
+      {
+        "input": 14,
+        "value": 65535
+      },
+      {
+        "input": 15,
+        "value": 65535
+      },
+      {
+        "input": 16,
+        "value": 65535
+      }
+    ]
+  }
+}
