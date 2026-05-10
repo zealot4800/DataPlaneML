@@ -48,9 +48,12 @@ inline int32_t parse_neuron_fixed_point(const json& value_json,
                                         uint16_t context_id,
                                         const char* field_kind,
                                         size_t index) {
-    constexpr long double kNeuronFixedPointScale = static_cast<long double>(1u << 16);
     long double raw_value = value_json.get<long double>();
-    long double scaled_value = raw_value * kNeuronFixedPointScale;
+    long double scaled_value = raw_value;
+    if (!value_json.is_number_integer() && !value_json.is_number_unsigned()) {
+        constexpr long double kNeuronFixedPointScale = static_cast<long double>(1u << 16);
+        scaled_value = raw_value * kNeuronFixedPointScale;
+    }
     long double min_value = static_cast<long double>(std::numeric_limits<int32_t>::min());
     long double max_value = static_cast<long double>(std::numeric_limits<int32_t>::max());
     if (scaled_value < min_value || scaled_value > max_value) {
