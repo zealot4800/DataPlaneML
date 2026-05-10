@@ -42,6 +42,41 @@ def ensure_gateway_defaults(config: Dict[str, Any]) -> None:
             proc["gateway"] = json.loads(json.dumps(default_gateway))
 
 
+def has_neuron_operator(node: Any) -> bool:
+    if isinstance(node, dict):
+        if node.get("op") in {"npb", "sigmoid"}:
+            return True
+        return any(has_neuron_operator(value) for value in node.values())
+    if isinstance(node, list):
+        return any(has_neuron_operator(value) for value in node)
+    return False
+
+
+def validate_neuron_overlay(config: Dict[str, Any]) -> tuple[int, int, int, int]:
+    metadata = config.get("metadata")
+    contexts = config.get("neuron_primitive_contexts")
+    sigmoid_table = config.get("sigmoid_table")
+    sigmoid_entries = sigmoid_table.get("entries") if isinstance(sigmoid_table, dict) else None
+
+    if not isinstance(metadata, list) or not metadata:
+        raise SystemExit("Validation failed: merged config is missing metadata headers.")
+    if not isinstance(contexts, list) or not contexts:
+        raise SystemExit("Validation failed: merged config is missing neuron_primitive_contexts.")
+    if not isinstance(sigmoid_entries, list) or not sigmoid_entries:
+        raise SystemExit("Validation failed: merged config is missing sigmoid_table entries.")
+
+    neuron_processor_count = 0
+    for idx in range(16):
+        proc = config.get(f"processor_{idx}")
+        if isinstance(proc, dict) and has_neuron_operator(proc.get("executor")):
+            neuron_processor_count += 1
+
+    if neuron_processor_count == 0:
+        raise SystemExit("Validation failed: merged config has no processor using neuron operators.")
+
+    return len(metadata), len(contexts), len(sigmoid_entries), neuron_processor_count
+
+
 def load_json(path: pathlib.Path) -> Dict[str, Any]:
     with path.open("r", encoding="utf-8") as handle:
         return json.load(handle)
@@ -90,6 +125,7 @@ def main() -> None:
         config = deep_merge(config, load_json(overlay))
 
     ensure_gateway_defaults(config)
+    metadata_count, context_count, sigmoid_count, neuron_processor_count = validate_neuron_overlay(config)
 
     output_path = args.output if args.output.is_absolute() else REPO_ROOT / args.output
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -100,6 +136,13 @@ def main() -> None:
     rel_out = output_path.relative_to(REPO_ROOT)
     overlay_str = ", ".join(str(p.relative_to(REPO_ROOT)) for p in overlay_paths)
     print(f"Merged {base_path} with [{overlay_str}] -> {rel_out}")
+    print(
+        "Validated overlay: "
+        f"metadata_headers={metadata_count}, "
+        f"neuron_contexts={context_count}, "
+        f"sigmoid_entries={sigmoid_count}, "
+        f"neuron_processors={neuron_processor_count}"
+    )
 
 
 if __name__ == "__main__":

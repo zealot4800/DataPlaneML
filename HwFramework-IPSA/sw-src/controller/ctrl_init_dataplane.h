@@ -665,10 +665,22 @@ void extract(const std::string & json_path, api::CfgClient & cfg) {
 #endif
     }
 
+    if (j.contains("metadata")) {
+#ifdef NO_CFG
+        extract_metadata(j.at("metadata"));
+#else
+        extract_metadata(j.at("metadata"), cfg);
+#endif
+    }
+
     for(int i = 0; i < 16; i++) {
         auto key = "processor_" + std::to_string(i);
+        // Check if processor exists before accessing - fixes segfault on missing processors
+        if (!j.contains(key)) {
+            continue;
+        }
         auto processor = j.at(key);
-        if(processor == nullptr) {
+        if(processor.is_null()) {
             std::cout << key << std::endl;
             continue;
         }
@@ -678,7 +690,6 @@ void extract(const std::string & json_path, api::CfgClient & cfg) {
         auto & gateway = processor.at("gateway");
         auto & matcher = processor.at("matcher");
         auto & executor = processor.at("executor");
-        auto & metadata = j.at("metadata");
 
 #ifdef NO_CFG
         extract_parser(parser, i);
@@ -687,7 +698,6 @@ void extract(const std::string & json_path, api::CfgClient & cfg) {
         }
         extract_matcher(matcher, i);
         extract_executor(executor, i);
-        extract_metadata(metadata);
 #else
         extract_parser(parser, i, cfg);
         if (processor.contains("gateway")) {
@@ -695,7 +705,6 @@ void extract(const std::string & json_path, api::CfgClient & cfg) {
         }
         extract_matcher(matcher, i, cfg);
         extract_executor(executor, i, cfg);
-        extract_metadata(metadata, cfg);
 #endif
     }
 }

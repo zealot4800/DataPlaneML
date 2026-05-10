@@ -32,6 +32,9 @@ public:
             int cur_proc_id = phv->next_proc_id;
             if(cur_proc_id == -1) {
                 break;
+            } else if (cur_proc_id < 0 || cur_proc_id >= (int)procs.size()) {
+                LOG(ERROR) << "execute: invalid processor id " << cur_proc_id;
+                break;
             } else {
                 LOG(INFO) << "Packet processed by processor " << cur_proc_id;
                 procs[cur_proc_id]->process_packet(phv);
@@ -135,6 +138,14 @@ public:
 
     void set_mem_config(int proc_id, int idx, int key_width, int value_width, int depth,
                          uint8_t * key_config, uint8_t * value_config) {
+        if (proc_id < 0 || proc_id >= (int)procs.size()) {
+            LOG(ERROR) << "set_mem_config: invalid proc_id " << proc_id;
+            return;
+        }
+        if (idx < 0 || idx >= 16) {  // MATCHER_THREAD_NUM = 16
+            LOG(ERROR) << "set_mem_config: invalid idx " << idx << " for processor " << proc_id;
+            return;
+        }
         procs[proc_id]->matcher->mts[idx]
                         ->set_mem_config(key_width, value_width, depth, key_config, value_config);
     }
@@ -144,14 +155,38 @@ public:
     }
 
     void insert_sram_entry(int proc_id, int idx, uint8_t * key, uint8_t * value, int key_byte_len, int value_byte_len) {
+        if (proc_id < 0 || proc_id >= (int)procs.size()) {
+            LOG(ERROR) << "insert_sram_entry: invalid proc_id " << proc_id;
+            return;
+        }
+        if (idx < 0 || idx >= 16) {  // MATCHER_THREAD_NUM = 16
+            LOG(ERROR) << "insert_sram_entry: invalid idx " << idx << " for processor " << proc_id;
+            return;
+        }
         procs[proc_id]->matcher->mts[idx]->insert_sram_entry(key, value, key_byte_len, value_byte_len);
     }
 
     void insert_tcam_entry(int proc_id, int idx, uint8_t * key, uint8_t * mask, uint8_t * value, int key_byte_len, int value_byte_len) {
+        if (proc_id < 0 || proc_id >= (int)procs.size()) {
+            LOG(ERROR) << "insert_tcam_entry: invalid proc_id " << proc_id;
+            return;
+        }
+        if (idx < 0 || idx >= 16) {  // MATCHER_THREAD_NUM = 16
+            LOG(ERROR) << "insert_tcam_entry: invalid idx " << idx << " for processor " << proc_id;
+            return;
+        }
         procs[proc_id]->matcher->mts[idx]->insert_tcam_entry(key, mask, value, key_byte_len, value_byte_len);
     }
 
     void set_field_infos(int proc_id, int idx, std::vector<FieldInfo*> _fdInfos) {
+        if (proc_id < 0 || proc_id >= (int)procs.size()) {
+            LOG(ERROR) << "set_field_infos: invalid proc_id " << proc_id;
+            return;
+        }
+        if (idx < 0 || idx >= 16) {  // MATCHER_THREAD_NUM = 16
+            LOG(ERROR) << "set_field_infos: invalid idx " << idx << " for processor " << proc_id;
+            return;
+        }
         procs[proc_id]->matcher->mts[idx]->set_field_info(std::move(_fdInfos));
     }
 
@@ -160,6 +195,14 @@ public:
 //    }
 
     void set_miss_act_id (int proc_id, int idx, int act_id) {
+        if (proc_id < 0 || proc_id >= (int)procs.size()) {
+            LOG(ERROR) << "set_miss_act_id: invalid proc_id " << proc_id;
+            return;
+        }
+        if (idx < 0 || idx >= 16) {  // MATCHER_THREAD_NUM = 16
+            LOG(ERROR) << "set_miss_act_id: invalid idx " << idx << " for processor " << proc_id;
+            return;
+        }
         procs[proc_id]->matcher->mts[idx]->set_miss_act_id(act_id);
     }
 
