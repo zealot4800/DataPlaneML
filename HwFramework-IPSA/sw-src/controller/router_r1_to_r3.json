@@ -1,0 +1,44 @@
+{
+  "action_id" : 2,
+  "action_para" : [
+    {
+      "value" : [
+        0,
+        0,
+        0,
+        0,
+        2,
+        80
+      ],
+      "width" : 48
+    },
+    {
+      "value" : [
+        0,
+        2
+      ],
+      "width" : 9
+    }
+  ],
+  "keys" : [
+    {
+      "mask" : [
+        255,
+        255,
+        255,
+        255
+      ],
+      "value" : [
+        10,
+        0,
+        2,
+        50
+      ],
+      "width" : 32
+    }
+  ],
+  "matcher_id" : 0,
+  "match_type" : "LPM",
+  "proc_id" : 0,
+  "type" : "ADD"
+}

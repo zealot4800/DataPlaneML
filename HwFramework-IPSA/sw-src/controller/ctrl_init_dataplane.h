@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cmath>
+#include <limits>
 
 #include "json.hpp"
 
@@ -43,6 +44,24 @@ ActivationFunction get_activation_function(const std::string &act) {
     return ActivationFunction::NONE;
 }
 
+inline int32_t parse_neuron_fixed_point(const json& value_json,
+                                        uint16_t context_id,
+                                        const char* field_kind,
+                                        size_t index) {
+    constexpr long double kNeuronFixedPointScale = static_cast<long double>(1u << 16);
+    long double raw_value = value_json.get<long double>();
+    long double scaled_value = raw_value * kNeuronFixedPointScale;
+    long double min_value = static_cast<long double>(std::numeric_limits<int32_t>::min());
+    long double max_value = static_cast<long double>(std::numeric_limits<int32_t>::max());
+    if (scaled_value < min_value || scaled_value > max_value) {
+        LOG(ERROR) << "neuron primitive context " << context_id
+                   << " " << field_kind << "[" << index << "] out of range after Q16 scaling: "
+                   << raw_value;
+        return 0;
+    }
+    return static_cast<int32_t>(std::llround(scaled_value));
+}
+
 #ifdef NO_CFG
 void extract_neuron_primitives(json j) {
 #else
@@ -65,6 +84,7 @@ void extract_neuron_primitives(json j, api::CfgClient & cfg) {
         ctx.num_neurons = ctx_json.at("num_neurons").get<int>();
         ctx.input_bitwidth = ctx_json.value("input_bitwidth", 16);
         ctx.output_bitwidth = ctx_json.value("output_bitwidth", 16);
+        ctx.output_shift = ctx_json.value("output_shift", 0);
         ctx.inputs_are_signed = ctx_json.value("inputs_signed", true);
         ctx.weights_are_signed = ctx_json.value("weights_signed", true);
         std::string activation_str = ctx_json.value("activation", std::string(""));
@@ -75,13 +95,21 @@ void extract_neuron_primitives(json j, api::CfgClient & cfg) {
         }
 
         if (ctx_json.contains("weights")) {
+            size_t weight_index = 0;
             for (auto &weight : ctx_json.at("weights")) {
-                ctx.weights.push_back(weight.get<int>());
+                ctx.weights.push_back(parse_neuron_fixed_point(weight,
+                                                               ctx.context_id,
+                                                               "weight",
+                                                               weight_index++));
             }
         }
         if (ctx_json.contains("biases")) {
+            size_t bias_index = 0;
             for (auto &bias : ctx_json.at("biases")) {
-                ctx.biases.push_back(bias.get<int>());
+                ctx.biases.push_back(parse_neuron_fixed_point(bias,
+                                                              ctx.context_id,
+                                                              "bias",
+                                                              bias_index++));
             }
         }
 

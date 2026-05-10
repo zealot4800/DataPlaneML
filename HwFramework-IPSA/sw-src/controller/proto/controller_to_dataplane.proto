@@ -496,11 +496,12 @@ message NeuronPrimitiveContext {
   uint32 numNeurons = 3;
   uint32 inputBitwidth = 4;
   uint32 outputBitwidth = 5;
-  bool inputsAreSigned = 6;
-  bool weightsAreSigned = 7;
-  repeated sint32 weights = 8;
-  repeated sint32 biases = 9;
-  ActivationFunction activation = 10;
+  uint32 outputShift = 6;
+  bool inputsAreSigned = 7;
+  bool weightsAreSigned = 8;
+  repeated sint32 weights = 9;
+  repeated sint32 biases = 10;
+  ActivationFunction activation = 11;
 }
 
 message LoadNeuronPrimitiveContextReq {

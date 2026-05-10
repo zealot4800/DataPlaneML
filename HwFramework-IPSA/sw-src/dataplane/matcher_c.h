@@ -532,7 +532,7 @@ public:
             for(int i = 0; i < (1 << TCAM_DEPTH); i++) {
                 for(int j = 0; j < key_width.tcam_slice_key_width; j++){
                     memcpy(tmp_key + j * TCAM_WIDTH / 8, tcam[tcam_key_seq[j]]->tbl + (i * TCAM_WIDTH / 8), TCAM_WIDTH / 8);
-                    memcpy(tmp_key + j * TCAM_WIDTH / 8, tcam[tcam_key_seq[j]]->mask + (i * TCAM_WIDTH / 8), TCAM_WIDTH / 8);
+                    memcpy(tmp_mask + j * TCAM_WIDTH / 8, tcam[tcam_key_seq[j]]->mask + (i * TCAM_WIDTH / 8), TCAM_WIDTH / 8);
                 }
                 int flag = 0;
                 for(int k = 0; k < byte_len; k++) {

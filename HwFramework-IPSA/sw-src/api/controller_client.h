@@ -70,6 +70,7 @@ namespace api {
             ctx_msg->set_numneurons(ctx.num_neurons);
             ctx_msg->set_inputbitwidth(ctx.input_bitwidth);
             ctx_msg->set_outputbitwidth(ctx.output_bitwidth);
+            ctx_msg->set_outputshift(ctx.output_shift);
             ctx_msg->set_inputsaresigned(ctx.inputs_are_signed);
             ctx_msg->set_weightsaresigned(ctx.weights_are_signed);
             ctx_msg->set_activation(get_activation(ctx.activation));

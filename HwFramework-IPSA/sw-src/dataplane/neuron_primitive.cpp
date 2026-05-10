@@ -9,7 +9,22 @@ namespace {
 
 constexpr uint32_t kMaxSupportedBitwidth = 32;
 constexpr uint32_t kFixedPointBitwidth = 16;
-constexpr uint32_t kFixedPointShift = 16;
+constexpr uint32_t kNeuronCoeffShift = 16;
+
+int64_t arithmetic_right_shift(int64_t value, uint32_t shift) {
+    if (shift == 0) {
+        return value;
+    }
+    if (shift >= 63) {
+        return value < 0 ? -1 : 0;
+    }
+    if (value >= 0) {
+        return value >> shift;
+    }
+    uint64_t magnitude = static_cast<uint64_t>(-(value + 1)) + 1ULL;
+    uint64_t shifted = (magnitude + ((1ULL << shift) - 1ULL)) >> shift;
+    return -static_cast<int64_t>(shifted);
+}
 
 Data make_zero_data(uint32_t bit_length) {
     Data zero{};
@@ -362,7 +377,8 @@ Data execute_neuron_primitive(const NeuronPrimitiveContext& ctx, const Data& fea
 
     std::vector<int64_t> mac_outputs(ctx.num_neurons, 0);
     for (uint32_t neuron = 0; neuron < ctx.num_neurons; ++neuron) {
-        int64_t acc = static_cast<int64_t>(ctx.biases[neuron]) << kFixedPointShift;
+        // Weights and biases are loaded as Q16 fixed-point coefficients.
+        int64_t acc = static_cast<int64_t>(ctx.biases[neuron]);
         for (uint32_t input_idx = 0; input_idx < ctx.num_inputs; ++input_idx) {
             const int64_t feature = static_cast<int64_t>(input_vector[input_idx]);
             const int64_t weight =
@@ -387,8 +403,9 @@ Data execute_neuron_primitive(const NeuronPrimitiveContext& ctx, const Data& fea
             }
             uint32_t table_width = sigmoid_mgr.value_bitwidth();
             for (uint32_t i = 0; i < ctx.num_neurons; ++i) {
-                int32_t scaled_input =
-                    static_cast<int32_t>(mac_outputs[i] >> kFixedPointShift);
+                int64_t shifted_value = arithmetic_right_shift(mac_outputs[i], kNeuronCoeffShift);
+                shifted_value = arithmetic_right_shift(shifted_value, ctx.output_shift);
+                int32_t scaled_input = static_cast<int32_t>(shifted_value);
                 uint32_t lookup_value = sigmoid_mgr.lookup(scaled_input);
                 encoded_outputs.push_back(
                     rescale_value(lookup_value, table_width, pack_width));
@@ -397,7 +414,8 @@ Data execute_neuron_primitive(const NeuronPrimitiveContext& ctx, const Data& fea
         }
         case ActivationFunction::RELU: {
             for (uint32_t i = 0; i < ctx.num_neurons; ++i) {
-                int64_t val = mac_outputs[i] >> kFixedPointShift;
+                int64_t val = arithmetic_right_shift(mac_outputs[i], kNeuronCoeffShift);
+                val = arithmetic_right_shift(val, ctx.output_shift);
                 if (val < 0) {
                     val = 0;
                 }
@@ -408,7 +426,8 @@ Data execute_neuron_primitive(const NeuronPrimitiveContext& ctx, const Data& fea
         case ActivationFunction::NONE:
         default: {
             for (uint32_t i = 0; i < ctx.num_neurons; ++i) {
-                int64_t val = mac_outputs[i] >> kFixedPointShift;
+                int64_t val = arithmetic_right_shift(mac_outputs[i], kNeuronCoeffShift);
+                val = arithmetic_right_shift(val, ctx.output_shift);
                 encoded_outputs.push_back(clamp_to_width(val, pack_width));
             }
             break;

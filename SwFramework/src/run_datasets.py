@@ -376,7 +376,7 @@ def get_dataset_configs() -> Dict[str, DatasetConfig]:
         "nsl-kdd": DatasetConfig(
             key="nsl-kdd",
             display_name="NSL-KDD",
-            default_filename="nsl-kdd-dataset.csv",
+            default_filename="Nsl-KDD/KDDTrain.csv",
             loader=load_nsl_kdd,
             model_filename="nsl_kdd_model.keras",
             layer_details_filename="nsl_kdd_best_model_layers.txt",
@@ -384,7 +384,7 @@ def get_dataset_configs() -> Dict[str, DatasetConfig]:
         "unsw-nb15": DatasetConfig(
             key="unsw-nb15",
             display_name="UNSW-NB15",
-            default_filename="UNSW_NB15_training-set.csv",
+            default_filename="UNSW-NB15/UNSW_NB15_training-set.csv",
             loader=load_unsw_nb15,
             model_filename="unsw_nb15_model.keras",
             layer_details_filename="unsw_nb15_best_model_layers.txt",
@@ -392,7 +392,7 @@ def get_dataset_configs() -> Dict[str, DatasetConfig]:
         "ton-iot": DatasetConfig(
             key="ton-iot",
             display_name="ToN-IoT",
-            default_filename="toniot_dataset.csv",
+            default_filename="TON_IoT/train_test_network.csv",
             loader=load_ton_iot,
             model_filename="toniot_model.keras",
             layer_details_filename="toniot_best_model_layers.txt",

@@ -174,7 +174,7 @@ public:
 
     void execute(PHV * phv) {
         LOG(INFO) << "  Gateway:";
-        for(int i = 0; i < exps.capacity(); i++) {
+        for(int i = 0; i < exps.size(); i++) {
             LOG(INFO) << "      expr " << i;
             LOG(INFO) << "          left: ";
             uint32_t res1 = get_value(exps[i]->param1, phv);
@@ -183,27 +183,27 @@ public:
             LOG(INFO) << "          relation(> >= < <= == !=): " << (int)exps[i]->relation;
             switch(exps[i]->relation) {
                 case RelationCode::GT : {
-                    bitmap += uint8_t(uint8_t(res1 > res2) << (7 - i));
+                    bitmap += uint8_t(uint8_t(res1 > res2) << i);
                     break;
                 }
                 case RelationCode::GTE : {
-                    bitmap += uint8_t(uint8_t(res1 >= res2) << (7 - i));
+                    bitmap += uint8_t(uint8_t(res1 >= res2) << i);
                     break;
                 }
                 case RelationCode::LT : {
-                    bitmap += uint8_t(uint8_t(res1 < res2) << (7 - i));
+                    bitmap += uint8_t(uint8_t(res1 < res2) << i);
                     break;
                 }
                 case RelationCode::LTE : {
-                    bitmap += uint8_t(uint8_t(res1 <= res2) << (7 - i));
+                    bitmap += uint8_t(uint8_t(res1 <= res2) << i);
                     break;
                 }
                 case RelationCode::EQ : {
-                    bitmap += uint8_t(uint8_t(res1 == res2) << (7 - i));
+                    bitmap += uint8_t(uint8_t(res1 == res2) << i);
                     break;
                 }
                 case RelationCode::NEQ : {
-                    bitmap += uint8_t(uint8_t(res1 != res2) << (7 - i));
+                    bitmap += uint8_t(uint8_t(res1 != res2) << i);
                     break;
                 }
                 default:

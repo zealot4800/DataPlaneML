@@ -82,7 +82,11 @@ sudo ip netns exec R2 ./bin/ctrl_init_dataplane <updated rp4 json>
 This repo ships a neural-classifier demo that exercises the neuron primitive blocks built into ipbm. The supporting JSON overlays live under `sw-src/tables/`:
 - `metadata_context.json` – extended metadata layout plus `neuron_primitive_contexts`.
 - `sigmoid_table.json` – sigmoid/activation lookup table.
-- `processor.json` – processors 0–9 that chain the neuron operations described in `neuron_primitive.md`.
+- `processor.json` – processors 0–9 that chain the neuron operations described in `neuron_primitive.md`. Processors 0–5 consume sliding 3-word windows so all eight feature words participate in the first layer.
+
+Neuron weights and biases are loaded from JSON as Q16 fixed-point values so decimal coefficients are preserved. The demo contexts also use `output_shift` to keep hidden-layer activations and the final sigmoid input inside a usable numeric range.
+
+For binary classification, treat the sigmoid output as a score unless you explicitly collapse it to a class bit. In this codebase, a neuron context with `activation: "sigmoid"` returns a 16-bit score in the range `0..65535`. If you need a hard `0/1` decision in the dataplane, model the final neuron as `activation: "none"` and run the standalone `sigmoid` operator with output width `1`, which yields `0` for values below `0.5` and `1` for values at or above `0.5`.
 
 Deploying the pipeline on top of the normal `classifier_ipbm.json` dataplane:
 1. Compile classifier.p4 to BMv2 JSON
@@ -100,12 +104,13 @@ Deploying the pipeline on top of the normal `classifier_ipbm.json` dataplane:
 4. Merge neuron overlays using the new base
    ```bash
    python3 scripts/merge_neuron_tables.py --base build/classifier_ipbm.json --output build/neuron_pipeline.json
+   ```
 5. Push the merged configuration through the controller:
    ```bash
    cd build
    sudo ip netns exec R2 ./bin/ctrl_init_dataplane ../build/neuron_pipeline.json
    ```
    The gRPC controller updates metadata, sigmoid tables, and processor definitions without restarting `main`.
-3. Review `neuron_primitive.md` for a packet-level walkthrough of how each processor consumes or produces the metadata fields defined in the overlays.
+6. Review `neuron_primitive.md` for a packet-level walkthrough of how each processor consumes or produces the metadata fields defined in the overlays.
 
 Whenever you tweak weights, activation tables, or metadata placement, edit the files in `sw-src/tables/`, rerun `scripts/merge_neuron_tables.py`, and reapply the result with `ctrl_init_dataplane`.

@@ -5,6 +5,8 @@
 #ifndef RECONF_SWITCH_IPSA_CTRL_MOD_TABLE_H
 #define RECONF_SWITCH_IPSA_CTRL_MOD_TABLE_H
 
+#include <cmath>
+
 #include "../api/controller_client.h"
 
 #include <iostream>
@@ -272,9 +274,9 @@ void extract(const std::string & json_path, api::CfgClient & cfg) {
 #ifndef NO_CFG
     int rc;
     if(match_type == MatchType::EXACT) {
-        rc = cfg.insert_sram_entry(proc_id, matcher_id, key, value, key_width, value_width);
+        rc = cfg.insert_sram_entry(proc_id, matcher_id, key, new_value, key_width, value_width + 2);
     } else {
-        rc = cfg.insert_tcam_entry(proc_id, matcher_id, key, mask, value, key_width, value_width);
+        rc = cfg.insert_tcam_entry(proc_id, matcher_id, key, mask, new_value, key_width, value_width + 2);
     }
     std::cout << "insert table entry: " << rc << std::endl;
 #endif

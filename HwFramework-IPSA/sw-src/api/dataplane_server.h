@@ -40,8 +40,8 @@ class CfgServiceImpl final : public rp4::CfgService::Service {
             for(auto & hdr : request->headerinfos()) {
                 auto meta = new HeaderInfo {
                     static_cast<uint8_t>(hdr.headerid()),
-                    static_cast<uint16_t>(hdr.headerlength()),
-                    static_cast<uint16_t>(hdr.headeroffset())
+                    static_cast<uint16_t>(hdr.headeroffset()),
+                    static_cast<uint16_t>(hdr.headerlength())
                 };
                 metas.push_back(meta);
             }
@@ -380,6 +380,7 @@ class CfgServiceImpl final : public rp4::CfgService::Service {
             ctx.num_neurons = ctx_msg.numneurons();
             ctx.input_bitwidth = ctx_msg.inputbitwidth() == 0 ? 16 : ctx_msg.inputbitwidth();
             ctx.output_bitwidth = ctx_msg.outputbitwidth();
+            ctx.output_shift = ctx_msg.outputshift();
             ctx.inputs_are_signed = ctx_msg.inputsaresigned();
             ctx.weights_are_signed = ctx_msg.weightsaresigned();
             ctx.activation = get_activation(ctx_msg.activation());

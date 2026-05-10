@@ -17,6 +17,41 @@ DEFINE_string(ifconf, "../../sw-src/conf/switch.yml", "Interfaces");
 
 #define PIPE
 
+static uint16_t ipv4_header_checksum(const uint8_t *header, size_t len) {
+    uint32_t sum = 0;
+    size_t i = 0;
+    for (; i + 1 < len; i += 2) {
+        sum += (static_cast<uint32_t>(header[i]) << 8) | header[i + 1];
+    }
+    if (i < len) {
+        sum += static_cast<uint32_t>(header[i]) << 8;
+    }
+    while ((sum >> 16) != 0) {
+        sum = (sum & 0xffffu) + (sum >> 16);
+    }
+    return static_cast<uint16_t>(~sum);
+}
+
+static void refresh_ipv4_checksum(Buffer packet, uint32_t recv_len) {
+    if (recv_len < sizeof(ether_header) + sizeof(iphdr)) {
+        return;
+    }
+
+    auto *eth_hdr = reinterpret_cast<ether_header *>(packet);
+    if (ntohs(eth_hdr->ether_type) != ETHERTYPE_IP) {
+        return;
+    }
+
+    auto *ip_hdr = reinterpret_cast<iphdr *>(packet + sizeof(ether_header));
+    size_t header_len = static_cast<size_t>(ip_hdr->ihl) * 4;
+    if (header_len < sizeof(iphdr) || recv_len < sizeof(ether_header) + header_len) {
+        return;
+    }
+
+    ip_hdr->check = 0;
+    ip_hdr->check = htons(ipv4_header_checksum(reinterpret_cast<const uint8_t *>(ip_hdr), header_len));
+}
+
 PHV * init_phv(uint8_t packet[], uint32_t recv_len, int if_index, Pipeline * pipe) {
     PHV *phv = new PHV();
     memcpy(phv->packet, packet, recv_len * sizeof(uint8_t));
@@ -118,6 +153,7 @@ int main(int argc, char *argv[]) {
                         if (memcmp(&glb.if_macs[if_idx], ZERO_MAC, sizeof(ether_addr)) != 0) {
 #ifdef PIPE
                             memcpy(packet, phv->packet, recv_len * sizeof(uint8_t));
+                            refresh_ipv4_checksum(packet, recv_len);
                             print_packet(packet, recv_len);
 #endif
                             auto eth_hdr = (ether_header *) packet;

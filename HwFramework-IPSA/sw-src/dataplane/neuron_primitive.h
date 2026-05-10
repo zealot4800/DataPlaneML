@@ -22,6 +22,7 @@ struct NeuronPrimitiveContext {
     uint32_t num_neurons = 0;
     uint32_t input_bitwidth = 16;
     uint32_t output_bitwidth = 16;
+    uint32_t output_shift = 0;
     bool inputs_are_signed = true;
     bool weights_are_signed = true;
     std::vector<int32_t> weights;
